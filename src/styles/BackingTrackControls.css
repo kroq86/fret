@@ -1,0 +1,130 @@
+.backing-track-controls {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.backing-track-controls h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 16px;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.control-row.settings {
+  flex-wrap: wrap;
+}
+
+.play-button {
+  padding: 6px 15px;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-width: 70px;
+}
+
+.play-button:hover {
+  background-color: #45a049;
+}
+
+.play-button.active {
+  background-color: #f44336;
+}
+
+.play-button.active:hover {
+  background-color: #da190b;
+}
+
+.play-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.volume-control, .tempo-control {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-left: 10px;
+}
+
+.volume-control label, .tempo-control label {
+  margin-right: 6px;
+  font-size: 13px;
+  color: #666;
+  min-width: 45px;
+}
+
+.volume-control input, .tempo-control input {
+  flex: 1;
+  margin: 0 6px;
+}
+
+.volume-control span, .tempo-control span {
+  font-size: 13px;
+  color: #666;
+  min-width: 45px;
+  text-align: right;
+}
+
+.select-control {
+  margin-right: 8px;
+  margin-bottom: 6px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.select-control label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 13px;
+  color: #666;
+}
+
+.select-control select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 13px;
+}
+
+.scale-info {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  padding-top: 4px;
+  border-top: 1px solid #eee;
+}
+
+@media (max-width: 500px) {
+  .control-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .volume-control, .tempo-control {
+    margin-left: 0;
+    margin-top: 6px;
+  }
+  
+  .select-control {
+    margin-right: 0;
+    margin-bottom: 6px;
+  }
+} 
