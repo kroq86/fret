@@ -1,5 +1,6 @@
 ## MacOS installation
 brew install npm
+
 npm run build && npm start
 
 Cross-platform guitar fretboard app with real-time note detection and scale visualization using Electron (for macOS, Windows, Linux):
