@@ -1,3 +1,5 @@
+<img width="1174" height="986" alt="image" src="https://github.com/user-attachments/assets/1e04dba3-e7b0-453b-a969-6e88cd5d1b69" />
+
 ## MacOS installation
 brew install npm
 
