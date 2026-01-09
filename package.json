@@ -52,6 +52,7 @@
   "build": {
     "appId": "com.fret.app",
     "productName": "Fret",
+    "publish": null,
     "directories": {
       "output": "release"
     },
