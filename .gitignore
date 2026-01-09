@@ -64,3 +64,18 @@ logs/
 
 # Webpack
 .webpack/
+
+# Capacitor / Mobile
+ios/
+android/
+.capacitor/
+*.xcworkspace
+!default.xcworkspace
+*.xcuserdata
+*.xcuserstate
+Podfile.lock
+
+# Mobile setup documentation
+MOBILE_SETUP.md
+XCODE_STEPS.md
+XCODE_TROUBLESHOOTING.md

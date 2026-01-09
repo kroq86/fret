@@ -43,7 +43,11 @@ export const Fretboard: React.FC<FretboardProps> = ({ playedNotes, bestScale, re
   const updateCanvasSize = () => {
     const container = fretboardRef.current?.parentElement;
     if (container) {
-      const newWidth = Math.max(800, container.clientWidth - 40); // минимальная ширина 800px, учитываем padding
+      // For mobile, use container width; for desktop, maintain minimum width
+      const isMobile = window.innerWidth <= 768;
+      const newWidth = isMobile 
+        ? Math.max(600, container.clientWidth - 20) // Smaller min-width for mobile
+        : Math.max(800, container.clientWidth - 40); // Desktop minimum width
       setCanvasWidth(newWidth);
     }
   };

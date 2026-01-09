@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { PitchyProcessor } from '../utils/pitchyProcessor';
 import { findCompatibleScales, NOTES, Scale, SCALES } from '../utils/scales';
 import { Fretboard } from './Fretboard';
-import { BackingTrackControls } from './BackingTrackControls';
 import '../styles/NoteDetector.css';
 
 export const NoteDetector: React.FC = () => {
@@ -13,6 +12,7 @@ export const NoteDetector: React.FC = () => {
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
+  const [showScaleScreen, setShowScaleScreen] = useState<boolean>(false);
   const audioProcessorRef = useRef<PitchyProcessor | null>(null);
 
   useEffect(() => {
@@ -89,7 +89,15 @@ export const NoteDetector: React.FC = () => {
   }, [isFrozen]);
 
   const toggleFreeze = () => {
-    setIsFrozen(!isFrozen);
+    const newFrozenState = !isFrozen;
+    setIsFrozen(newFrozenState);
+    
+    // Switch to scale selection screen when freezing
+    if (newFrozenState && playedNotes.length >= 2) {
+      setShowScaleScreen(true);
+    } else if (!newFrozenState) {
+      setShowScaleScreen(false);
+    }
   };
 
   const toggleDebugMode = () => {
@@ -172,15 +180,96 @@ export const NoteDetector: React.FC = () => {
   const bestScale = findBestScale();
   const relatedScales = bestScale ? findRelatedScales(bestScale) : null;
 
+  // Screen 1: Note Detection
+  if (!showScaleScreen) {
+    return (
+      <div className="note-detector">
+        <div className="controls">
+          <h2>Detect Notes</h2>
+          
+          <div className="control-buttons">
+            <button 
+              onClick={toggleFreeze}
+              className="freeze-button"
+              disabled={playedNotes.length < 2}
+            >
+              Freeze & Select Scale
+            </button>
+            <button 
+              onClick={toggleDebugMode}
+              className={`debug-button ${isDebugMode ? 'active' : ''}`}
+            >
+              {isDebugMode ? 'Hide Debug' : 'Show Debug'}
+            </button>
+          </div>
+          
+          {/* Audio input selector */}
+          <div className="device-selector">
+            <label htmlFor="audioDevice">Input</label>
+            <select
+              id="audioDevice"
+              value={selectedDeviceId ?? ''}
+              onChange={(e) => setSelectedDeviceId(e.target.value || null)}
+            >
+              <option value="">Default</option>
+              {devices.map(d => (
+                <option key={d.deviceId} value={d.deviceId}>{d.label || 'Audio input'}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="played-notes">
+            {playedNotes.length > 0 ? (
+              <>
+                <div className="notes-display">
+                  <strong>Played notes:</strong> {playedNotes.join(', ')}
+                </div>
+                {bestScale && (
+                  <div className="detected-scale">
+                    Detected: {bestScale.root} {bestScale.scale.name}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="instruction">Play at least 2 notes to detect scale</div>
+            )}
+          </div>
+        </div>
+        
+        {error && <div className="error">{error}</div>}
+        
+        {isDebugMode && (
+          <div className="debug-info">
+            <h4>Debug Information</h4>
+            <div className="debug-log">
+              {debugInfo.map((info, index) => (
+                <div key={index} className="debug-entry">{info}</div>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        <Fretboard 
+          playedNotes={playedNotes}
+          bestScale={null}
+          relatedScales={null}
+        />
+      </div>
+    );
+  }
+
+  // Screen 2: Scale Selection
   return (
-    <div className="note-detector">
+    <div className="note-detector scale-selection-screen">
       <div className="controls">
+        <h2>Select Scale</h2>
+        
         <div className="control-buttons">
           <button 
             onClick={toggleFreeze}
-            className={`freeze-button ${isFrozen ? 'active' : ''}`}
+            className="freeze-button active"
           >
-            {isFrozen ? 'Resume' : 'Freeze'}
+            Back to Detection
           </button>
           <button 
             onClick={toggleDebugMode}
@@ -190,35 +279,16 @@ export const NoteDetector: React.FC = () => {
           </button>
         </div>
         
-        {/* Audio input selector: always visible */}
-        <div className="device-selector" style={{ margin: '8px 0' }}>
-          <label htmlFor="audioDevice" style={{ marginRight: 8 }}>Input</label>
-          <select
-            id="audioDevice"
-            value={selectedDeviceId ?? ''}
-            onChange={(e) => setSelectedDeviceId(e.target.value || null)}
-          >
-            <option value="">Default</option>
-            {devices.map(d => (
-              <option key={d.deviceId} value={d.deviceId}>{d.label || 'Audio input'}</option>
-            ))}
-          </select>
-        </div>
-        
         <div className="played-notes">
-          {playedNotes.length > 0 && (
-            <>
-              <div>Played notes: {playedNotes.join(', ')}</div>
-              {bestScale && (
-                <div className="detected-scale">
-                  Detected Scale: {bestScale.root} {bestScale.scale.name}
-                </div>
-              )}
-            </>
+          <div className="notes-display">
+            <strong>Played notes:</strong> {playedNotes.join(', ')}
+          </div>
+          {bestScale && (
+            <div className="detected-scale main-scale">
+              Main Scale: {bestScale.root} {bestScale.scale.name}
+            </div>
           )}
         </div>
-        
-        <BackingTrackControls bestScale={bestScale} />
       </div>
       
       {error && <div className="error">{error}</div>}

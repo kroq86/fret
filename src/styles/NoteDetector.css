@@ -9,6 +9,33 @@
   overflow: hidden;
 }
 
+.note-detector h2 {
+  margin: 10px 0 15px 0;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.scale-selection-screen {
+  background-color: #e8f4f8;
+}
+
+.notes-display {
+  font-size: 18px;
+  margin: 10px 0;
+  padding: 12px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.instruction {
+  font-size: 16px;
+  color: #666;
+  padding: 15px;
+  font-style: italic;
+}
+
 .controls {
   display: flex;
   flex-direction: column;
@@ -26,26 +53,38 @@
 }
 
 .freeze-button, .debug-button {
-  padding: 10px 10px;
-  font-size: 14px;
+  padding: 12px 20px;
+  font-size: 16px;
   background-color: #4a90e2;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-weight: 500;
 }
 
-.freeze-button:hover, .debug-button:hover {
-  background-color: #357abd;
+.freeze-button {
+  background-color: #4CAF50;
+}
+
+.freeze-button:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: scale(1.02);
+}
+
+.freeze-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .freeze-button.active {
-  background-color: #e24a4a;
+  background-color: #ff6b6b;
 }
 
 .freeze-button.active:hover {
-  background-color: #bd3535;
+  background-color: #ff5252;
 }
 
 .debug-button {
@@ -252,6 +291,17 @@ button.active:hover {
   margin-top: 10px;
   font-weight: bold;
   color: #4a90e2;
+  font-size: 16px;
+  padding: 8px;
+  background-color: rgba(74, 144, 226, 0.1);
+  border-radius: 4px;
+}
+
+.detected-scale.main-scale {
+  font-size: 20px;
+  color: #2c7a3f;
+  background-color: rgba(76, 175, 80, 0.15);
+  border: 2px solid #4CAF50;
 }
 
 /* Device selector: force visible without changing colors */
@@ -289,5 +339,55 @@ button.active:hover {
 
   .device-selector select {
     min-width: 0;
+  }
+  
+  .note-detector {
+    padding: 8px;
+    margin: 5px;
+  }
+  
+  .note-detector h2 {
+    font-size: 20px;
+    margin: 5px 0 10px 0;
+  }
+  
+  .controls {
+    gap: 8px;
+  }
+  
+  .control-buttons {
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .freeze-button, .debug-button {
+    padding: 14px 18px;
+    font-size: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .played-notes {
+    font-size: 16px;
+    padding: 8px;
+  }
+  
+  .notes-display {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .instruction {
+    font-size: 14px;
+    padding: 12px;
+  }
+  
+  .detected-scale {
+    font-size: 14px;
+    padding: 6px;
+  }
+  
+  .detected-scale.main-scale {
+    font-size: 18px;
   }
 } 

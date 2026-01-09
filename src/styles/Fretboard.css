@@ -29,6 +29,27 @@
   max-width: 100%;
   min-width: 800px; /* Минимальная ширина для корректного отображения */
   height: 200px;
+  touch-action: pan-x; /* Allow horizontal scrolling on mobile */
+}
+
+/* Mobile optimizations for fretboard */
+@media screen and (max-width: 768px) {
+  .fretboard {
+    min-width: 600px; /* Smaller min-width for mobile */
+    height: 150px; /* Slightly smaller height for mobile */
+  }
+  
+  .fretboard-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Add padding for better scroll experience */
+    padding-bottom: 10px;
+  }
+  
+  .fretboard-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .scale-selector {
