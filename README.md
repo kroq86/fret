@@ -2,9 +2,21 @@
 
 # Guitar Fretboard App
 
-Cross-platform desktop app (macOS, Windows, Linux) built with Electron. Shows interactive guitar fretboard, detects played notes in real-time via microphone, highlights them, visualizes scales, and suggests matching scales.[1]
+Cross-platform app for **desktop** (macOS, Windows, Linux) and **mobile** (iOS, Android). Shows interactive guitar fretboard, detects played notes in real-time via microphone, highlights them, visualizes scales, and suggests matching scales.
 
-## Quick Start
+## 📦 Download Ready-to-Use App
+
+**New to GitHub?** You don't need to build anything! Pre-built apps are ready to download:
+
+1. Go to the [**Releases page**](../../releases) (or click "Releases" on the right sidebar →)
+2. Download the latest version:
+   - **Windows**: Download `Fret Setup X.X.X.exe`
+   - **macOS**: Download `Fret-X.X.X.dmg`
+3. Install and run!
+
+> **Note**: On first run, you may need to allow microphone access in your system settings.
+
+## Quick Start (For Developers)
 
 ```
 brew install node  # or download from nodejs.org
@@ -28,20 +40,41 @@ Requires microphone access. Tested on macOS with fish shell.
 
 ## Tech Stack
 
-- Electron (main process + renderer).
-- React (UI).
-- Canvas API (fretboard draw).
-- Web Audio API (mic input, pitch detect).
-- Firebase (user scales/presets).
+**Desktop:**
+- Electron (main process + renderer)
+- React (UI)
+- Canvas API (fretboard draw)
+- Web Audio API (mic input, pitch detect)
+
+**Mobile:**
+- Capacitor (iOS & Android wrapper)
+- React (same codebase as desktop)
+- Web Audio API (works on mobile browsers)
 
 ## Build & Package
 
-```
-npm run build:dev
-npm run package:mac    # or :win, :linux
+### Desktop Apps
+```bash
+npm run build:win      # Windows (EXE)
+npm run build:mac      # macOS (DMG)
+npm run build:all      # All platforms
 ```
 
-Outputs in `dist/`. For App Store, use electron-builder config.[1]
+### Mobile Apps (iOS/Android)
+```bash
+# Build web app first
+npm run build
+
+# For iOS (requires macOS + Xcode)
+npm run cap:add:ios
+npm run cap:open:ios   # Opens Xcode
+
+# For Android (requires Android Studio)
+npm run cap:add:android
+npm run cap:open:android   # Opens Android Studio
+```
+
+Outputs in `release/` for desktop, native projects in `ios/` and `android/` for mobile.
 
 ## Dev Roadmap
 
