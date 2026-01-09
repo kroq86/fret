@@ -66,14 +66,21 @@ logs/
 .webpack/
 
 # Capacitor / Mobile
-ios/
-android/
 .capacitor/
-*.xcworkspace
-!default.xcworkspace
+
+# iOS temporary files
+ios/App/Pods/
+ios/App/Podfile.lock
 *.xcuserdata
 *.xcuserstate
-Podfile.lock
+*.xcworkspace/xcuserdata/
+DerivedData/
+
+# Android temporary files
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
 
 # Mobile setup documentation
 MOBILE_SETUP.md
