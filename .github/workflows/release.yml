@@ -34,7 +34,7 @@ jobs:
     - name: Upload Windows artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: windows-installer-${{ github.sha }}
+        name: windows-installer-${{ github.ref_name }}-${{ github.sha }}
         path: release/*.exe
         retention-days: 30
 
@@ -64,35 +64,37 @@ jobs:
     - name: Upload Mac artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: mac-installer-${{ github.sha }}
+        name: mac-installer-${{ github.ref_name }}-${{ github.sha }}
         path: release/*.dmg
         retention-days: 30
 
   create-release:
     needs: [build-windows, build-mac]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     
     steps:
     - name: Download Windows artifacts
       uses: actions/download-artifact@v4
       with:
-        name: windows-installer-${{ github.sha }}
+        name: windows-installer-${{ github.ref_name }}-${{ github.sha }}
         path: ./release
 
     - name: Download Mac artifacts
       uses: actions/download-artifact@v4
       with:
-        name: mac-installer-${{ github.sha }}
+        name: mac-installer-${{ github.ref_name }}-${{ github.sha }}
         path: ./release
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         files: release/*
         generate_release_notes: true
         draft: false
-        prerelease: false
+        prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
